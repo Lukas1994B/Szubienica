@@ -1,8 +1,11 @@
-var haslo = "bez pracy nie ma kołaczy";
+var haslo = "miłość miłość w zakopanem";
 haslo = haslo.toUpperCase();
 
 var haslo1 = "";
 
+var ile_skuch = 0;
+var yes = new Audio("yes.wav")
+var no = new Audio("no.wav")
 var dlugosc = haslo.length;
 
 for (i = 0; i < dlugosc; i++) {
@@ -12,11 +15,11 @@ for (i = 0; i < dlugosc; i++) {
 }
 
 function wypisz_haslo() {
-    document.getElementById("plansza").innerHTML=haslo1;
+    document.getElementById("plansza").innerHTML = haslo1;
 
 }
 
-window.onload=start;
+window.onload = start;
 
 var litery = new Array(35);
 litery[0] = "A";
@@ -60,15 +63,74 @@ function start() {
 
     var tresc_diva = "";
 
-    for (i=0; i<=34; i++)
-    {
+    for (i = 0; i <= 34; i++) {
 
         var element = "lit" + i;
-        tresc_diva = tresc_diva + '<div class="litera" id="'+element+'"">'+litery[i]+'</div>';
-        if ((i+1) % 7 == 0) tresc_diva = tresc_diva + '<div style="clear:both;"></div>';
+        tresc_diva = tresc_diva + '<div class="litera" onclick="sprawdz(' + i + ')" id="' + element + '">' + litery[i] + '</div>';
+        if ((i + 1) % 7 == 0) tresc_diva = tresc_diva + '<div style="clear:both;"></div>';
     }
 
-    document.getElementById("alfabet").innerHTML=tresc_diva;
+    document.getElementById("alfabet").innerHTML = tresc_diva;
 
     wypisz_haslo();
+}
+
+
+String.prototype.ustawZnak = function (miejsce, znak) {
+
+    if (miejsce > this.length - 1) return this.toString();
+    else return this.substr(0, miejsce) + znak + this.substr(miejsce + 1);
+
+}
+
+
+function sprawdz(nr) {
+
+    var trafiona = false;
+
+    for (i = 0; i < dlugosc; i++) {
+        if (haslo.charAt(i) == litery[nr]) {
+            haslo1 = haslo1.ustawZnak(i, litery[nr]);
+            trafiona = true;
+        }
+    }
+
+    if (trafiona == true) {
+
+        yes.play();
+        var element = "lit" + nr;
+        document.getElementById(element).style.background = "#003300";
+        document.getElementById(element).style.color = "#00C000";
+        document.getElementById(element).style.border = "3px solid #00C000";
+        document.getElementById(element).style.cursor = "default";
+        wypisz_haslo();
+    } else {
+
+        no.play();
+        var element = "lit" + nr;
+        document.getElementById(element).style.background = "#330000";
+        document.getElementById(element).style.color = "#C00000";
+        document.getElementById(element).style.border = "3px solid #C00000";
+        document.getElementById(element).style.cursor = "default";
+        document.getElementById(element).setAttribute("onclick", ";")
+
+
+        ile_skuch++;
+        var obraz = "img/s" + ile_skuch + ".jpg";
+        document.getElementById("szubienica").innerHTML = '<img src="' + obraz + '" alt="" />';
+    }
+
+
+    //win
+    if (haslo == haslo1) {
+        document.getElementById("alfabet").innerHTML = "Tak jest! to jest poprawne hasło"
+            + haslo + '<br/><br/><span class="reset" onclick="location.reload()">Jeszcze raz?</span>'
+
+    }
+
+    if (ile_skuch >= 9) {
+        document.getElementById("alfabet").innerHTML = "Przegrałeś! Poprawne hasło: "
+            + haslo + '<br/><br/><span class="reset" onclick="location.reload()">Jeszcze raz?</span>'
+    }
+
 }

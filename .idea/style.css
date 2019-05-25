@@ -5,6 +5,7 @@ body
     font-size: 28px;
     font-family: 'Inconsolata';
     font-weight: 700;
+
 }
 
 #pojemnik
@@ -22,6 +23,7 @@ body
     text-align: center;
     font-size: 48px;
     min-height: 60px;
+    font-family: 'IBM Plex Mono', monospace;
 }
 
 #szubienica
@@ -57,4 +59,17 @@ body
     background-color: #222222;
     color: white;
     border: 3px solid white;
+}
+
+.reset
+{
+    color: green;
+    cursor: pointer;
+    font-size: 40px;
+
+}
+
+.reset:hover
+{
+    color: white;
 }
